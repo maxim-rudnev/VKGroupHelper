@@ -68,5 +68,13 @@ namespace VKGroupHelperSDK.Kernel
                 Attachments = attList
             });
         }
+
+        public void GetPostsFromGroup(long groupid)
+        {
+            var posts = _api.Wall.Get(new WallGetParams()
+            {
+                OwnerId = -groupid
+            });
+        }
     }
 }

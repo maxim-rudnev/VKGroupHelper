@@ -16,6 +16,9 @@ namespace UI
 {
     public partial class MainWindow : Form
     {
+        ulong _appid = ulong.Parse(ConfigurationManager.AppSettings["AppIdForTest"]);
+        VKGroupHelperWorker _vkHelper = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,28 +28,54 @@ namespace UI
             ulong appid = ulong.Parse( ConfigurationManager.AppSettings["AppIdForTest"]);
             string picFolder = @"C:\Users\admin\Desktop\Контент 1";
 
-            //Если вы являетесь владельцем группы, перейдите на страницу — «Рекламировать страницу».
-            //Ссылка в адресной строке браузера будет иметь следующий вид:
-            //http://vk.com/adscreate?page_id=xxxxxxxx, где xxxxxxxx — id вашего сообщества.
-            long groupid = 188488349;
+            
 
-            var helper = new VKGroupHelperWorker(appid, username, password);
+        }
 
-            var picLst = FSClient.GetPicturesFromFolder(picFolder);
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void buttonAuth_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _vkHelper = new VKGroupHelperWorker(
+                    _appid, 
+                    textBoxLogin.Text, 
+                    textBoxPassword.Text);
+
+                groupBox1.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            string contentFolder = textBoxContentPath.Text;
+
+            var picLst = FSClient.GetPicturesFromFolder(contentFolder);
 
             // алгоритм создания отложенных постов
+            long groupid = long.Parse(textBoxGroupId.Text);
+
             // максимальное количество постов
-            int? maxPostCount = null;
+            int? maxPostCount = int.Parse( textBoxMaxPostCount.Text);
             // хэштэги
-            string hashtags = "#огонь #юмор #прикол #смешно #смех #жиза #позитив #хорошеенастроение #улыбнись #я #улыбка #поставьлайк #подписка #фоллоуми #коммент #напиши";
+            string hashtags = textBoxPostHashtags.Text;
             // сколько постов на день
-            int postOnDayCount = 5;
+            int postOnDayCount = int.Parse( textBoxPostOnDayCount.Text);
             // одна картинка - один пост
             // какой шаг между постами (часов)
-            int postTimeGap = 2;
+            int postTimeGap = int.Parse( textBoxPostTimeStep.Text);
 
             // дата начала
-            DateTime startDate = new DateTime(2020, 04, 08, 9,0,0);
+            DateTime startDate = dateTimePickerBeginDate.Value;
 
             // в каждом посте один анонимный опрос
             Poll poll = new Poll()
@@ -59,6 +88,10 @@ namespace UI
                 }
             };
 
+
+
+
+
             int postCounter = 0;
             int dayCounter = 0;
             int dailyPostCounter = 0;
@@ -66,7 +99,7 @@ namespace UI
 
             foreach (var picPath in picLst)
             {
-                if ( maxPostCount!= null && postCounter == maxPostCount)
+                if (maxPostCount != null && postCounter == maxPostCount)
                 {
                     break;
                 }
@@ -76,12 +109,12 @@ namespace UI
                     dailyPostCounter = 0;
                     dayCounter++;
                 }
-                
+
 
                 // вычисление даты
                 DateTime postDate = dailyFirstPostDate.AddDays(dayCounter).AddHours(postTimeGap * dailyPostCounter);
 
-                helper.WallPost(groupid, postDate, hashtags, picPath, poll);
+                _vkHelper.WallPost(groupid, postDate, hashtags, picPath, poll);
 
                 File.Delete(picPath);
 
@@ -89,7 +122,6 @@ namespace UI
                 postCounter++;
             }
 
-            Console.ReadLine();
         }
     }
 }
