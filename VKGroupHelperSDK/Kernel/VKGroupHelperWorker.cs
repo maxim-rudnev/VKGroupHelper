@@ -46,13 +46,9 @@ namespace VKGroupHelperSDK.Kernel
 
             // загрузка картинки
             var uploadServer = _api.Photo.GetWallUploadServer(groupid);
-
             var wc = new WebClient();
-
             var responseFile = Encoding.ASCII.GetString(wc.UploadFile(uploadServer.UploadUrl, picPath));
-
             System.Collections.ObjectModel.ReadOnlyCollection<VkNet.Model.Attachments.Photo> photos = _api.Photo.SaveWallPhoto(responseFile, null, (ulong)groupid);
-
             foreach (var element in photos)
             {
                 attList.Add(element);
@@ -67,6 +63,25 @@ namespace VKGroupHelperSDK.Kernel
                 PublishDate = postDate,
                 Attachments = attList
             });
+        }
+
+        public List<Domain.Group> GetGroupsWhereUserIsAdmin()
+        {
+            List<Domain.Group> res = new List<Domain.Group>();
+
+            var respGroups = _api.Groups.Get(new GroupsGetParams()
+            {
+                Fields = GroupsFields.All,
+                Extended = true,
+                Filter = GroupsFilters.Administrator | GroupsFilters.Editor | GroupsFilters.Moderator
+            });
+
+            foreach (var group in respGroups)
+            {
+                res.Add(new Domain.Group() { Id = group.Id, Name = group.Name, ScreenName = group.ScreenName});
+            }
+
+            return res;
         }
 
         public void GetPostsFromGroup(long groupid)

@@ -35,6 +35,7 @@
             this.buttonAuth = new System.Windows.Forms.Button();
             this.groupBoxAuth = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBoxLong = new System.Windows.Forms.TextBox();
@@ -63,8 +64,8 @@
             this.buttonSelectContentPath = new System.Windows.Forms.Button();
             this.textBoxContentPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxGroupId = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
+            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
+            this.checkBoxDeleteFiles = new System.Windows.Forms.CheckBox();
             this.groupBoxAuth.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -131,7 +132,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBoxGroupId);
+            this.groupBox1.Controls.Add(this.checkBoxDeleteFiles);
+            this.groupBox1.Controls.Add(this.comboBoxGroups);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.buttonLoad);
             this.groupBox1.Controls.Add(this.groupBox3);
@@ -160,6 +162,15 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Загрузка постов из картинок и видео";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(12, 30);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(58, 13);
+            this.label15.TabIndex = 25;
+            this.label15.Text = "ID Группы";
             // 
             // buttonLoad
             // 
@@ -389,6 +400,7 @@
             this.buttonSelectContentPath.TabIndex = 7;
             this.buttonSelectContentPath.Text = "Выбрать";
             this.buttonSelectContentPath.UseVisualStyleBackColor = true;
+            this.buttonSelectContentPath.Click += new System.EventHandler(this.buttonSelectContentPath_Click);
             // 
             // textBoxContentPath
             // 
@@ -407,22 +419,23 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Путь";
             // 
-            // textBoxGroupId
+            // comboBoxGroups
             // 
-            this.textBoxGroupId.Location = new System.Drawing.Point(97, 27);
-            this.textBoxGroupId.Name = "textBoxGroupId";
-            this.textBoxGroupId.Size = new System.Drawing.Size(189, 20);
-            this.textBoxGroupId.TabIndex = 26;
-            this.textBoxGroupId.Text = "188488349";
+            this.comboBoxGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxGroups.Location = new System.Drawing.Point(97, 21);
+            this.comboBoxGroups.Name = "comboBoxGroups";
+            this.comboBoxGroups.Size = new System.Drawing.Size(556, 21);
+            this.comboBoxGroups.TabIndex = 26;
             // 
-            // label15
+            // checkBoxDeleteFiles
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(12, 30);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(58, 13);
-            this.label15.TabIndex = 25;
-            this.label15.Text = "ID Группы";
+            this.checkBoxDeleteFiles.AutoSize = true;
+            this.checkBoxDeleteFiles.Location = new System.Drawing.Point(401, 81);
+            this.checkBoxDeleteFiles.Name = "checkBoxDeleteFiles";
+            this.checkBoxDeleteFiles.Size = new System.Drawing.Size(180, 17);
+            this.checkBoxDeleteFiles.TabIndex = 27;
+            this.checkBoxDeleteFiles.Text = "Удалять файл после загрузки";
+            this.checkBoxDeleteFiles.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -484,8 +497,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBoxLat;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBoxGroupId;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBoxGroups;
+        private System.Windows.Forms.CheckBox checkBoxDeleteFiles;
     }
 }
 
