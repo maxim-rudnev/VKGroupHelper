@@ -66,6 +66,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxGroups = new System.Windows.Forms.ComboBox();
             this.checkBoxDeleteFiles = new System.Windows.Forms.CheckBox();
+            this.textBoxLocationStep = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxSquareWidth = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.groupBoxAuth.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -184,6 +188,10 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.textBoxSquareWidth);
+            this.groupBox3.Controls.Add(this.label17);
+            this.groupBox3.Controls.Add(this.textBoxLocationStep);
+            this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.textBoxLong);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.textBoxLat);
@@ -197,15 +205,16 @@
             // 
             // textBoxLong
             // 
-            this.textBoxLong.Location = new System.Drawing.Point(136, 45);
+            this.textBoxLong.Location = new System.Drawing.Point(484, 19);
             this.textBoxLong.Name = "textBoxLong";
             this.textBoxLong.Size = new System.Drawing.Size(181, 20);
             this.textBoxLong.TabIndex = 25;
+            this.textBoxLong.Text = "37.5819287";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(7, 48);
+            this.label14.Location = new System.Drawing.Point(355, 22);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(106, 13);
             this.label14.TabIndex = 24;
@@ -217,6 +226,7 @@
             this.textBoxLat.Name = "textBoxLat";
             this.textBoxLat.Size = new System.Drawing.Size(181, 20);
             this.textBoxLat.TabIndex = 23;
+            this.textBoxLat.Text = "55,7595916";
             // 
             // label13
             // 
@@ -437,6 +447,41 @@
             this.checkBoxDeleteFiles.Text = "Удалять файл после загрузки";
             this.checkBoxDeleteFiles.UseVisualStyleBackColor = true;
             // 
+            // textBoxLocationStep
+            // 
+            this.textBoxLocationStep.Location = new System.Drawing.Point(136, 45);
+            this.textBoxLocationStep.Name = "textBoxLocationStep";
+            this.textBoxLocationStep.ReadOnly = true;
+            this.textBoxLocationStep.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLocationStep.TabIndex = 27;
+            this.textBoxLocationStep.Text = "0,0016";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(7, 48);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(78, 13);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "Шаг разброса";
+            // 
+            // textBoxSquareWidth
+            // 
+            this.textBoxSquareWidth.Location = new System.Drawing.Point(484, 45);
+            this.textBoxSquareWidth.Name = "textBoxSquareWidth";
+            this.textBoxSquareWidth.Size = new System.Drawing.Size(181, 20);
+            this.textBoxSquareWidth.TabIndex = 29;
+            this.textBoxSquareWidth.Text = "5000";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(355, 48);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(113, 13);
+            this.label17.TabIndex = 28;
+            this.label17.Text = "Ширина квадрата (м)";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,6 +545,10 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBoxGroups;
         private System.Windows.Forms.CheckBox checkBoxDeleteFiles;
+        private System.Windows.Forms.TextBox textBoxSquareWidth;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBoxLocationStep;
+        private System.Windows.Forms.Label label16;
     }
 }
 

@@ -30,7 +30,7 @@ namespace VKGroupHelperSDK.Kernel
             });
         }
 
-        public void WallPost(long groupid, DateTime postDate, string hashtags, string picPath, Poll poll)
+        public void WallPost(long groupid, DateTime postDate, string hashtags, string picPath, Poll poll, Location location)
         {
             List<VkNet.Model.Attachments.MediaAttachment> attList = new List<VkNet.Model.Attachments.MediaAttachment>();
 
@@ -54,15 +54,20 @@ namespace VKGroupHelperSDK.Kernel
                 attList.Add(element);
             }
 
-
-
-            _api.Wall.Post(new WallPostParams()
+            var postParams = new WallPostParams()
             {
                 OwnerId = -groupid,
                 Message = hashtags,
                 PublishDate = postDate,
                 Attachments = attList
-            });
+            };
+            if (location != null)
+            {
+                postParams.Long = location.Longitude;
+                postParams.Lat = location.Latitude;
+            }
+
+            _api.Wall.Post(postParams);
         }
 
         public List<Domain.Group> GetGroupsWhereUserIsAdmin()

@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Group.cs" />
+    <Compile Include="Domain\Location.cs" />
     <Compile Include="Domain\Poll.cs" />
     <Compile Include="Kernel\FSClient.cs" />
     <Compile Include="Kernel\VKGroupHelperWorker.cs" />

@@ -92,8 +92,8 @@ namespace UI
             }
 
             // алгоритм создания отложенных постов
-            var picLst = FSClient.GetPicturesFromFolder(contentFolder);
-            if (picLst.Count == 0)
+            var pictureLst = FSClient.GetPicturesFromFolder(contentFolder);
+            if (pictureLst.Count == 0)
             {
                 MessageBox.Show("Операция не может быть выполнена - отсутствуют файлы для загрузки");
                 return;
@@ -130,7 +130,19 @@ namespace UI
             // какой шаг между постами (часов)
             int postTimeGap = int.Parse( textBoxPostTimeStep.Text);
 
-            
+            double? longitude = double.Parse(textBoxLong.Text.Replace('.',','));
+            double? latitude = double.Parse(textBoxLat.Text.Replace('.', ','));
+            Location initialLocation = null;
+            if (longitude != null && latitude != null)
+            {
+                initialLocation = new Location()
+                {
+                    Longitude = longitude.Value,
+                    Latitude = latitude.Value
+                };
+            }
+            double? squareWidth = double.Parse(textBoxSquareWidth.Text.Replace('.', ','));
+            double? locationStep = double.Parse(textBoxLocationStep.Text.Replace('.', ',')); // по умолчанию 0,0016 что примерно 550м
 
             // в каждом посте один анонимный опрос
             Poll poll = new Poll()
@@ -151,8 +163,11 @@ namespace UI
             int dayCounter = 0;
             int dailyPostCounter = 0;
             DateTime dailyFirstPostDate = startDate;
+            int locX = 0;
+            int locY = 0;
+            int? maxSquarePosts = squareWidth != null ? (int?)squareWidth.Value / 550 : null;
 
-            foreach (var picPath in picLst)
+            foreach (var picturePath in pictureLst)
             {
                 if ( postCounter == maxPostCount )
                 {
@@ -170,13 +185,42 @@ namespace UI
                 // вычисление даты
                 DateTime postDate = dailyFirstPostDate.AddDays(dayCounter).AddHours(postTimeGap * dailyPostCounter);
 
-                _vkHelper.WallPost(selectedGroupId, postDate, hashtags, picPath, poll);
+                // вычисление геолокации
+                Location newLocation = null;
+                if (initialLocation != null && locationStep != null && squareWidth != null && maxSquarePosts != null)
+                {
+                    newLocation = new Location();
+                    newLocation.Latitude = initialLocation.Latitude + locationStep.Value * locX;
+                    newLocation.Longitude = initialLocation.Longitude - locationStep.Value * locY;
+                }
+
+                try
+                {
+                    _vkHelper.WallPost(selectedGroupId, postDate, hashtags, picturePath, poll, newLocation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Произошла ошибка - {ex.Message}");
+                }
 
                 if (checkBoxDeleteFiles.Checked)
-                    File.Delete(picPath);
+                    File.Delete(picturePath);
 
                 dailyPostCounter++;
                 postCounter++;
+                locX++;
+               
+                if (maxSquarePosts != null)
+                {
+                    if (locX > maxSquarePosts) {
+                        locX = 0;
+                        locY++;
+                    }
+                    if (locY > maxSquarePosts)
+                    {
+                        locY = 0;
+                    }
+                }
             }
 
             if (maxPostCount == -1)
