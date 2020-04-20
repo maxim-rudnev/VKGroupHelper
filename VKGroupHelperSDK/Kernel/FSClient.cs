@@ -4,14 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VKGroupHelperSDK.Domain;
 
 namespace VKGroupHelperSDK.Kernel
 {
     public class FSClient
     {
-        public static List<string> GetPicturesFromFolder(string picFolder)
+        public static List<ContentForUploadInfo> GetContentFromFolder(string contentFolder)
         {
-            return Directory.GetFiles(picFolder, "*.jpg").ToList();
+            var res = Directory.GetFiles(contentFolder, "*.*")
+                .Where(x=>x.EndsWith(".jpg") || x.EndsWith(".mp4"))
+                .Select(x => new ContentForUploadInfo(x));
+
+            return res.ToList();
         }
     }
 }

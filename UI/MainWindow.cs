@@ -19,6 +19,8 @@ namespace UI
         ulong _appid = ulong.Parse(ConfigurationManager.AppSettings["AppIdForTest"]);
         VKGroupHelperWorker _vkHelper = null;
 
+        string _folderForCompletedContent = "Completed";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,7 +37,7 @@ namespace UI
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-
+            textBoxPostOnDayCount_TextChanged(null, null);
         }
 
 
@@ -76,12 +78,15 @@ namespace UI
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
+            #region Check
             string contentFolder = textBoxContentPath.Text;
             if ( String.IsNullOrEmpty( contentFolder) ||  !Directory.Exists(contentFolder))
             {
                 MessageBox.Show("Операция не может быть выполнена - не выбран каталог загрузки");
                 return;
             }
+            string completedFolder = $"{contentFolder}\\{_folderForCompletedContent}";
+            if (!Directory.Exists(completedFolder)) Directory.CreateDirectory(completedFolder);
             
             
             long selectedGroupId = (long)comboBoxGroups.SelectedValue;
@@ -92,8 +97,8 @@ namespace UI
             }
 
             // алгоритм создания отложенных постов
-            var pictureLst = FSClient.GetPicturesFromFolder(contentFolder);
-            if (pictureLst.Count == 0)
+            var contentLst = FSClient.GetContentFromFolder(contentFolder);
+            if (contentLst.Count == 0)
             {
                 MessageBox.Show("Операция не может быть выполнена - отсутствуют файлы для загрузки");
                 return;
@@ -117,18 +122,31 @@ namespace UI
 
             // дата начала
             DateTime startDate = dateTimePickerBeginDate.Value;
-            if (startDate <= DateTime.Now)
+            if (startDate <= DateTime.Now.AddMinutes(1))
             {
-                MessageBox.Show("Операция не может быть выполнена - дата публикации должна быть минимум + 5 минут к текущему времени/дате");
+                MessageBox.Show("Операция не может быть выполнена - дата публикации должна быть минимум + 1 минут к текущему времени/дате");
                 return;
             }
+
+            #endregion
 
             // хэштэги
             string hashtags = textBoxPostHashtags.Text;
             
             // одна картинка - один пост
             // какой шаг между постами (часов)
-            int postTimeGap = int.Parse( textBoxPostTimeStep.Text);
+            int postTimeGap;
+            if (checkBoxThroughoutTheDay.Enabled && checkBoxThroughoutTheDay.Checked)
+            {
+                int minHour = int.Parse(textBoxTimeMin.Text);
+                int maxHour = int.Parse(textBoxTimeMax.Text);
+
+                postTimeGap = (maxHour - minHour) / maxPostOnDay;
+            }
+            else
+            {
+                postTimeGap = int.Parse(textBoxPostTimeStep.Text);
+            }
 
             double? longitude = double.Parse(textBoxLong.Text.Replace('.',','));
             double? latitude = double.Parse(textBoxLat.Text.Replace('.', ','));
@@ -167,8 +185,12 @@ namespace UI
             int locY = 0;
             int? maxSquarePosts = squareWidth != null ? (int?)squareWidth.Value / 550 : null;
 
-            foreach (var picturePath in pictureLst)
+            foreach (var contentInfo in contentLst)
             {
+                if (contentInfo.IsVideo() && !checkBoxUploadVideo.Checked) continue;
+
+                if (contentInfo.IsPhoto() && !checkBoxUploadPhoto.Checked) continue;
+
                 if ( postCounter == maxPostCount )
                 {
                     MessageBox.Show("Операция выполнена");
@@ -196,7 +218,7 @@ namespace UI
 
                 try
                 {
-                    _vkHelper.WallPost(selectedGroupId, postDate, hashtags, picturePath, poll, newLocation);
+                    _vkHelper.WallPost(selectedGroupId, postDate, hashtags, contentInfo, poll, newLocation);
                 }
                 catch (Exception ex)
                 {
@@ -204,7 +226,13 @@ namespace UI
                 }
 
                 if (checkBoxDeleteFiles.Checked)
-                    File.Delete(picturePath);
+                {
+                    File.Delete(contentInfo.FullName);
+                }
+                else
+                {
+                    File.Move(contentInfo.FullName, $"{completedFolder}\\{contentInfo.Name}");
+                }
 
                 dailyPostCounter++;
                 postCounter++;
@@ -236,6 +264,29 @@ namespace UI
             {
                 textBoxContentPath.Text = fbd.SelectedPath;
             }
+        }
+
+        private void textBoxPostOnDayCount_TextChanged(object sender, EventArgs e)
+        {
+            int postOnDay;
+
+            try
+            {
+                postOnDay = int.Parse(textBoxPostOnDayCount.Text);
+            }
+            catch
+            {
+                postOnDay = 0;
+            }
+
+            if (postOnDay <=0) checkBoxThroughoutTheDay.Enabled = false;
+            else checkBoxThroughoutTheDay.Enabled = true;
+        }
+
+        private void checkBoxThroughoutTheDay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxThroughoutTheDay.Checked) textBoxPostTimeStep.Enabled = false;
+            else textBoxPostTimeStep.Enabled = true;
         }
     }
 }

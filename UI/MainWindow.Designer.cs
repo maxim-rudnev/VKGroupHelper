@@ -35,9 +35,15 @@
             this.buttonAuth = new System.Windows.Forms.Button();
             this.groupBoxAuth = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxDeleteFiles = new System.Windows.Forms.CheckBox();
+            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBoxSquareWidth = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBoxLocationStep = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.textBoxLong = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.textBoxLat = new System.Windows.Forms.TextBox();
@@ -64,12 +70,10 @@
             this.buttonSelectContentPath = new System.Windows.Forms.Button();
             this.textBoxContentPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
-            this.checkBoxDeleteFiles = new System.Windows.Forms.CheckBox();
-            this.textBoxLocationStep = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.textBoxSquareWidth = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.checkBoxUploadVideo = new System.Windows.Forms.CheckBox();
+            this.checkBoxUploadPhoto = new System.Windows.Forms.CheckBox();
+            this.checkBoxThroughoutTheDay = new System.Windows.Forms.CheckBox();
             this.groupBoxAuth.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -136,6 +140,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxThroughoutTheDay);
+            this.groupBox1.Controls.Add(this.checkBoxUploadPhoto);
+            this.groupBox1.Controls.Add(this.checkBoxUploadVideo);
+            this.groupBox1.Controls.Add(this.label18);
             this.groupBox1.Controls.Add(this.checkBoxDeleteFiles);
             this.groupBox1.Controls.Add(this.comboBoxGroups);
             this.groupBox1.Controls.Add(this.label15);
@@ -166,6 +174,24 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Загрузка постов из картинок и видео";
+            // 
+            // checkBoxDeleteFiles
+            // 
+            this.checkBoxDeleteFiles.AutoSize = true;
+            this.checkBoxDeleteFiles.Location = new System.Drawing.Point(401, 81);
+            this.checkBoxDeleteFiles.Name = "checkBoxDeleteFiles";
+            this.checkBoxDeleteFiles.Size = new System.Drawing.Size(180, 17);
+            this.checkBoxDeleteFiles.TabIndex = 27;
+            this.checkBoxDeleteFiles.Text = "Удалять файл после загрузки";
+            this.checkBoxDeleteFiles.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxGroups
+            // 
+            this.comboBoxGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxGroups.Location = new System.Drawing.Point(97, 21);
+            this.comboBoxGroups.Name = "comboBoxGroups";
+            this.comboBoxGroups.Size = new System.Drawing.Size(556, 21);
+            this.comboBoxGroups.TabIndex = 26;
             // 
             // label15
             // 
@@ -202,6 +228,41 @@
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Геопозиция";
+            // 
+            // textBoxSquareWidth
+            // 
+            this.textBoxSquareWidth.Location = new System.Drawing.Point(484, 45);
+            this.textBoxSquareWidth.Name = "textBoxSquareWidth";
+            this.textBoxSquareWidth.Size = new System.Drawing.Size(181, 20);
+            this.textBoxSquareWidth.TabIndex = 29;
+            this.textBoxSquareWidth.Text = "5000";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(355, 48);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(113, 13);
+            this.label17.TabIndex = 28;
+            this.label17.Text = "Ширина квадрата (м)";
+            // 
+            // textBoxLocationStep
+            // 
+            this.textBoxLocationStep.Location = new System.Drawing.Point(136, 45);
+            this.textBoxLocationStep.Name = "textBoxLocationStep";
+            this.textBoxLocationStep.ReadOnly = true;
+            this.textBoxLocationStep.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLocationStep.TabIndex = 27;
+            this.textBoxLocationStep.Text = "0,0016";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(7, 48);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(78, 13);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "Шаг разброса";
             // 
             // textBoxLong
             // 
@@ -375,6 +436,7 @@
             this.textBoxPostOnDayCount.Size = new System.Drawing.Size(37, 20);
             this.textBoxPostOnDayCount.TabIndex = 11;
             this.textBoxPostOnDayCount.Text = "-1";
+            this.textBoxPostOnDayCount.TextChanged += new System.EventHandler(this.textBoxPostOnDayCount_TextChanged);
             // 
             // label5
             // 
@@ -429,58 +491,51 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Путь";
             // 
-            // comboBoxGroups
+            // label18
             // 
-            this.comboBoxGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGroups.Location = new System.Drawing.Point(97, 21);
-            this.comboBoxGroups.Name = "comboBoxGroups";
-            this.comboBoxGroups.Size = new System.Drawing.Size(556, 21);
-            this.comboBoxGroups.TabIndex = 26;
+            this.label18.AutoSize = true;
+            this.label18.ForeColor = System.Drawing.Color.Green;
+            this.label18.Location = new System.Drawing.Point(398, 101);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(310, 13);
+            this.label18.TabIndex = 28;
+            this.label18.Text = "После обработки, файлы перемещаются в папку Completed";
             // 
-            // checkBoxDeleteFiles
+            // checkBoxUploadVideo
             // 
-            this.checkBoxDeleteFiles.AutoSize = true;
-            this.checkBoxDeleteFiles.Location = new System.Drawing.Point(401, 81);
-            this.checkBoxDeleteFiles.Name = "checkBoxDeleteFiles";
-            this.checkBoxDeleteFiles.Size = new System.Drawing.Size(180, 17);
-            this.checkBoxDeleteFiles.TabIndex = 27;
-            this.checkBoxDeleteFiles.Text = "Удалять файл после загрузки";
-            this.checkBoxDeleteFiles.UseVisualStyleBackColor = true;
+            this.checkBoxUploadVideo.AutoSize = true;
+            this.checkBoxUploadVideo.Checked = true;
+            this.checkBoxUploadVideo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUploadVideo.Location = new System.Drawing.Point(206, 81);
+            this.checkBoxUploadVideo.Name = "checkBoxUploadVideo";
+            this.checkBoxUploadVideo.Size = new System.Drawing.Size(113, 17);
+            this.checkBoxUploadVideo.TabIndex = 29;
+            this.checkBoxUploadVideo.Text = "Загружать видео";
+            this.checkBoxUploadVideo.UseVisualStyleBackColor = true;
             // 
-            // textBoxLocationStep
+            // checkBoxUploadPhoto
             // 
-            this.textBoxLocationStep.Location = new System.Drawing.Point(136, 45);
-            this.textBoxLocationStep.Name = "textBoxLocationStep";
-            this.textBoxLocationStep.ReadOnly = true;
-            this.textBoxLocationStep.Size = new System.Drawing.Size(181, 20);
-            this.textBoxLocationStep.TabIndex = 27;
-            this.textBoxLocationStep.Text = "0,0016";
+            this.checkBoxUploadPhoto.AutoSize = true;
+            this.checkBoxUploadPhoto.Checked = true;
+            this.checkBoxUploadPhoto.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUploadPhoto.Location = new System.Drawing.Point(206, 108);
+            this.checkBoxUploadPhoto.Name = "checkBoxUploadPhoto";
+            this.checkBoxUploadPhoto.Size = new System.Drawing.Size(108, 17);
+            this.checkBoxUploadPhoto.TabIndex = 30;
+            this.checkBoxUploadPhoto.Text = "Загружать фото";
+            this.checkBoxUploadPhoto.UseVisualStyleBackColor = true;
             // 
-            // label16
+            // checkBoxThroughoutTheDay
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(7, 48);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(78, 13);
-            this.label16.TabIndex = 26;
-            this.label16.Text = "Шаг разброса";
-            // 
-            // textBoxSquareWidth
-            // 
-            this.textBoxSquareWidth.Location = new System.Drawing.Point(484, 45);
-            this.textBoxSquareWidth.Name = "textBoxSquareWidth";
-            this.textBoxSquareWidth.Size = new System.Drawing.Size(181, 20);
-            this.textBoxSquareWidth.TabIndex = 29;
-            this.textBoxSquareWidth.Text = "5000";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(355, 48);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(113, 13);
-            this.label17.TabIndex = 28;
-            this.label17.Text = "Ширина квадрата (м)";
+            this.checkBoxThroughoutTheDay.AutoSize = true;
+            this.checkBoxThroughoutTheDay.Location = new System.Drawing.Point(206, 134);
+            this.checkBoxThroughoutTheDay.Name = "checkBoxThroughoutTheDay";
+            this.checkBoxThroughoutTheDay.Size = new System.Drawing.Size(471, 17);
+            this.checkBoxThroughoutTheDay.TabIndex = 31;
+            this.checkBoxThroughoutTheDay.Text = "Распределять равномерно в течение дня (шаг = рабочий период / кол-во постов в ден" +
+    "ь";
+            this.checkBoxThroughoutTheDay.UseVisualStyleBackColor = true;
+            this.checkBoxThroughoutTheDay.CheckedChanged += new System.EventHandler(this.checkBoxThroughoutTheDay_CheckedChanged);
             // 
             // MainWindow
             // 
@@ -549,6 +604,10 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox textBoxLocationStep;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox checkBoxUploadPhoto;
+        private System.Windows.Forms.CheckBox checkBoxUploadVideo;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox checkBoxThroughoutTheDay;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -30,7 +31,7 @@ namespace VKGroupHelperSDK.Kernel
             });
         }
 
-        public void WallPost(long groupid, DateTime postDate, string hashtags, string picPath, Poll poll, Location location)
+        public void WallPost(long groupid, DateTime postDate, string hashtags, ContentForUploadInfo contentInfo, Poll poll, Location location)
         {
             List<VkNet.Model.Attachments.MediaAttachment> attList = new List<VkNet.Model.Attachments.MediaAttachment>();
 
@@ -45,13 +46,43 @@ namespace VKGroupHelperSDK.Kernel
 
 
             // загрузка картинки
-            var uploadServer = _api.Photo.GetWallUploadServer(groupid);
-            var wc = new WebClient();
-            var responseFile = Encoding.ASCII.GetString(wc.UploadFile(uploadServer.UploadUrl, picPath));
-            System.Collections.ObjectModel.ReadOnlyCollection<VkNet.Model.Attachments.Photo> photos = _api.Photo.SaveWallPhoto(responseFile, null, (ulong)groupid);
-            foreach (var element in photos)
+            if (contentInfo.IsPhoto())
             {
-                attList.Add(element);
+                var uploadServer = _api.Photo.GetWallUploadServer(groupid);
+                var wc = new WebClient();
+                var responseFile = Encoding.ASCII.GetString(wc.UploadFile(uploadServer.UploadUrl, contentInfo.FullName));
+                //Location locationApi = null;
+                //if (location != null)
+                //{
+                //    locationApi = new Location()
+                //    {
+                //        Latitude = location.Latitude,
+                //        Longitude = location.Longitude
+                //    };
+                //}
+                System.Collections.ObjectModel.ReadOnlyCollection<VkNet.Model.Attachments.Photo> photos = _api.Photo.SaveWallPhoto(responseFile,
+                                                                                                                null,
+                                                                                                                (ulong)groupid);
+                foreach (var element in photos)
+                {
+                    attList.Add(element);
+                }
+            }
+
+            // загрузка видео
+            if (contentInfo.IsVideo())
+            {
+                var video = _api.Video.Save(new VkNet.Model.RequestParams.VideoSaveParams
+                {
+                    IsPrivate = false,
+                    Repeat = false,
+                    Description = hashtags,
+                    Name = contentInfo.FullName
+                });
+                var wc = new WebClient();
+                var responseFile = Encoding.ASCII.GetString(wc.UploadFile(video.UploadUrl, contentInfo.FullName));
+
+                attList.Add(video);
             }
 
             var postParams = new WallPostParams()

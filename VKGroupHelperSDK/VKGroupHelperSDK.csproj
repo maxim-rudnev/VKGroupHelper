@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\ContentForUploadInfo.cs" />
     <Compile Include="Domain\Group.cs" />
     <Compile Include="Domain\Location.cs" />
     <Compile Include="Domain\Poll.cs" />
