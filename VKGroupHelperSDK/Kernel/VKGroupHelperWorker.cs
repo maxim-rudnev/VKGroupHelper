@@ -77,7 +77,7 @@ namespace VKGroupHelperSDK.Kernel
                     IsPrivate = false,
                     Repeat = false,
                     Description = hashtags,
-                    Name = contentInfo.FullName
+                    Name = contentInfo.Name
                 });
                 var wc = new WebClient();
                 var responseFile = Encoding.ASCII.GetString(wc.UploadFile(video.UploadUrl, contentInfo.FullName));
