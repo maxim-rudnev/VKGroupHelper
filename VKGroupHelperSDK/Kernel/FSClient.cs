@@ -13,7 +13,7 @@ namespace VKGroupHelperSDK.Kernel
         public static List<ContentForUploadInfo> GetContentFromFolder(string contentFolder)
         {
             var res = Directory.GetFiles(contentFolder, "*.*")
-                .Where(x=>x.EndsWith(".jpg") || x.EndsWith(".mp4"))
+                .Where(x=>x.ToLower().EndsWith(".jpg") || x.ToLower().EndsWith(".mp4"))
                 .Select(x => new ContentForUploadInfo(x));
 
             return res.ToList();

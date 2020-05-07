@@ -21,6 +21,22 @@ namespace VKGroupHelperSDK.Domain
 
         public string Name { get { return _fileInfo.Name; } }
 
+        public string NameWithoutExtension
+        {
+            get
+            {
+                string res = string.Empty;
+
+                int dotIndex = _fileInfo.Name.LastIndexOf('.');
+                if (dotIndex == -1) res = _fileInfo.Name;
+                else res = _fileInfo.Name.Substring(0, dotIndex);
+
+                return res;
+            }
+        }
+
+        public string Extension { get { return _fileInfo.Extension; } }
+
         public string FullName { get { return _fileInfo.FullName; } }
 
         public bool IsPhoto()

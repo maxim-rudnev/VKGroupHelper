@@ -151,7 +151,7 @@ namespace UI
             double? longitude = double.Parse(textBoxLong.Text.Replace('.',','));
             double? latitude = double.Parse(textBoxLat.Text.Replace('.', ','));
             Location initialLocation = null;
-            if (longitude != null && latitude != null)
+            if (checkBoxPlaceGeoPosition.Checked && longitude != null && latitude != null)
             {
                 initialLocation = new Location()
                 {
@@ -231,7 +231,13 @@ namespace UI
                 }
                 else
                 {
-                    File.Move(contentInfo.FullName, $"{completedFolder}\\{contentInfo.Name}");
+                    string filename = $"{completedFolder}\\{contentInfo.Name}";
+                    if (File.Exists(filename))
+                        filename = $"{completedFolder}\\{contentInfo.NameWithoutExtension}-{Guid.NewGuid().ToString()}{contentInfo.Extension}";
+                    else
+                        filename = contentInfo.Name;
+
+                    File.Move(contentInfo.FullName, filename);
                 }
 
                 dailyPostCounter++;
