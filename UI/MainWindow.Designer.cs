@@ -44,13 +44,14 @@
             this.label15 = new System.Windows.Forms.Label();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxPlaceGeoPosition = new System.Windows.Forms.CheckBox();
             this.textBoxSquareWidth = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.textBoxLocationStep = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.textBoxLong = new System.Windows.Forms.TextBox();
+            this.textBoxLongitude = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBoxLat = new System.Windows.Forms.TextBox();
+            this.textBoxLatitude = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -74,7 +75,6 @@
             this.buttonSelectContentPath = new System.Windows.Forms.Button();
             this.textBoxContentPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.checkBoxPlaceGeoPosition = new System.Windows.Forms.CheckBox();
             this.groupBoxAuth.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -266,9 +266,9 @@
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.textBoxLocationStep);
             this.groupBox3.Controls.Add(this.label16);
-            this.groupBox3.Controls.Add(this.textBoxLong);
+            this.groupBox3.Controls.Add(this.textBoxLongitude);
             this.groupBox3.Controls.Add(this.label14);
-            this.groupBox3.Controls.Add(this.textBoxLat);
+            this.groupBox3.Controls.Add(this.textBoxLatitude);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Location = new System.Drawing.Point(15, 429);
             this.groupBox3.Name = "groupBox3";
@@ -276,6 +276,16 @@
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Геопозиция";
+            // 
+            // checkBoxPlaceGeoPosition
+            // 
+            this.checkBoxPlaceGeoPosition.AutoSize = true;
+            this.checkBoxPlaceGeoPosition.Location = new System.Drawing.Point(8, 19);
+            this.checkBoxPlaceGeoPosition.Name = "checkBoxPlaceGeoPosition";
+            this.checkBoxPlaceGeoPosition.Size = new System.Drawing.Size(168, 17);
+            this.checkBoxPlaceGeoPosition.TabIndex = 30;
+            this.checkBoxPlaceGeoPosition.Text = "Устанавливать геопозицию";
+            this.checkBoxPlaceGeoPosition.UseVisualStyleBackColor = true;
             // 
             // textBoxSquareWidth
             // 
@@ -314,11 +324,11 @@
             // 
             // textBoxLong
             // 
-            this.textBoxLong.Location = new System.Drawing.Point(482, 49);
-            this.textBoxLong.Name = "textBoxLong";
-            this.textBoxLong.Size = new System.Drawing.Size(181, 20);
-            this.textBoxLong.TabIndex = 25;
-            this.textBoxLong.Text = "37.5819287";
+            this.textBoxLongitude.Location = new System.Drawing.Point(482, 49);
+            this.textBoxLongitude.Name = "textBoxLong";
+            this.textBoxLongitude.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLongitude.TabIndex = 25;
+            this.textBoxLongitude.Text = "37.5819287";
             // 
             // label14
             // 
@@ -331,11 +341,11 @@
             // 
             // textBoxLat
             // 
-            this.textBoxLat.Location = new System.Drawing.Point(134, 49);
-            this.textBoxLat.Name = "textBoxLat";
-            this.textBoxLat.Size = new System.Drawing.Size(181, 20);
-            this.textBoxLat.TabIndex = 23;
-            this.textBoxLat.Text = "55,7595916";
+            this.textBoxLatitude.Location = new System.Drawing.Point(134, 49);
+            this.textBoxLatitude.Name = "textBoxLat";
+            this.textBoxLatitude.Size = new System.Drawing.Size(181, 20);
+            this.textBoxLatitude.TabIndex = 23;
+            this.textBoxLatitude.Text = "55,7595916";
             // 
             // label13
             // 
@@ -445,6 +455,7 @@
             // textBoxPostHashtags
             // 
             this.textBoxPostHashtags.Location = new System.Drawing.Point(141, 157);
+            this.textBoxPostHashtags.Multiline = true;
             this.textBoxPostHashtags.Name = "textBoxPostHashtags";
             this.textBoxPostHashtags.Size = new System.Drawing.Size(626, 20);
             this.textBoxPostHashtags.TabIndex = 15;
@@ -539,16 +550,6 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Путь";
             // 
-            // checkBoxPlaceGeoPosition
-            // 
-            this.checkBoxPlaceGeoPosition.AutoSize = true;
-            this.checkBoxPlaceGeoPosition.Location = new System.Drawing.Point(8, 19);
-            this.checkBoxPlaceGeoPosition.Name = "checkBoxPlaceGeoPosition";
-            this.checkBoxPlaceGeoPosition.Size = new System.Drawing.Size(168, 17);
-            this.checkBoxPlaceGeoPosition.TabIndex = 30;
-            this.checkBoxPlaceGeoPosition.Text = "Устанавливать геопозицию";
-            this.checkBoxPlaceGeoPosition.UseVisualStyleBackColor = true;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -558,6 +559,7 @@
             this.Controls.Add(this.groupBoxAuth);
             this.Name = "MainWindow";
             this.Text = "VK Group Helper";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.groupBoxAuth.ResumeLayout(false);
             this.groupBoxAuth.PerformLayout();
@@ -605,9 +607,9 @@
         private System.Windows.Forms.TextBox textBoxQuestion;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button buttonLoad;
-        private System.Windows.Forms.TextBox textBoxLong;
+        private System.Windows.Forms.TextBox textBoxLongitude;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBoxLat;
+        private System.Windows.Forms.TextBox textBoxLatitude;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBoxGroups;

@@ -24,22 +24,73 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            ulong appid = ulong.Parse(ConfigurationManager.AppSettings["AppIdForTest"]);
+        private void _loadSettings()
+        {
+            textBoxLogin.Text = Globals.Settings.GetUsername();
+            textBoxPassword.Text = Globals.Settings.GetPassword();
 
-#if DEBUG
-            string username = ConfigurationManager.AppSettings["UsernameForTest"];
-            string password = ConfigurationManager.AppSettings["PasswordForTest"];
-            textBoxLogin.Text = username;
-            textBoxPassword.Text = password;
-#endif
+            textBoxContentPath.Text = Globals.Settings.ContentPath;
+            textBoxMaxPostCount.Text = Globals.Settings.TotalPosts.ToString();
+            textBoxPostOnDayCount.Text = Globals.Settings.MaxPostOnDay.ToString();
+            textBoxPostTimeStep.Text = Globals.Settings.PostStep.ToString();
+            checkBoxUploadVideo.Checked = Globals.Settings.LoadVideo;
+            checkBoxUploadPhoto.Checked = Globals.Settings.LoadPictures;
+            checkBoxThroughoutTheDay.Checked = Globals.Settings.ThroughoutTheDay;
+            checkBoxDeleteFiles.Checked = Globals.Settings.DeleteAfterLoad;
+            textBoxPostHashtags.Text = Globals.Settings.Hashtags;
+            textBoxTimeMin.Text = Globals.Settings.TimeMin.ToString();
+            textBoxTimeMax.Text = Globals.Settings.TimeMax.ToString();
+
+            textBoxQuestion.Text = Globals.Settings.Poll.Question;
+
+            checkBoxPlaceGeoPosition.Checked = Globals.Settings.PlaceGeoPosition;
+            textBoxLatitude.Text = Globals.Settings.Latitude.ToString();
+            textBoxLongitude.Text = Globals.Settings.Longitude.ToString();
+            textBoxLocationStep.Text = Globals.Settings.LocationStep.ToString();
+            textBoxSquareWidth.Text = Globals.Settings.SquareWidth.ToString();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
             textBoxPostOnDayCount_TextChanged(null, null);
+
+            _loadSettings();
         }
 
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _saveSettings();
+        }
+
+        private void _saveSettings()
+        {
+            Globals.Settings.SetUsername(textBoxLogin.Text);
+            Globals.Settings.SetPassword(textBoxPassword.Text);
+
+            Globals.Settings.ContentPath = textBoxContentPath.Text;
+            Globals.Settings.TotalPosts = int.Parse( textBoxMaxPostCount.Text);
+            Globals.Settings.MaxPostOnDay  = int.Parse( textBoxPostOnDayCount.Text);
+            Globals.Settings.PostStep  = int.Parse( textBoxPostTimeStep.Text);
+            Globals.Settings.LoadVideo = checkBoxUploadVideo.Checked;
+            Globals.Settings.LoadPictures  = checkBoxUploadPhoto.Checked;
+            Globals.Settings.ThroughoutTheDay  = checkBoxThroughoutTheDay.Checked;
+            Globals.Settings.DeleteAfterLoad  = checkBoxDeleteFiles.Checked;
+            Globals.Settings.Hashtags = textBoxPostHashtags.Text;
+            Globals.Settings.TimeMin  = int.Parse( textBoxTimeMin.Text);
+            Globals.Settings.TimeMax  = int.Parse( textBoxTimeMax.Text);
+
+            Globals.Settings.Poll.Question = textBoxQuestion.Text;
+
+            Globals.Settings.PlaceGeoPosition  = checkBoxPlaceGeoPosition.Checked;
+            Globals.Settings.Latitude  = double.Parse( textBoxLatitude.Text);
+            Globals.Settings.Longitude  = double.Parse( textBoxLongitude.Text);
+            Globals.Settings.LocationStep = double.Parse( textBoxLocationStep.Text );
+            Globals.Settings.SquareWidth = int.Parse( textBoxSquareWidth.Text);
+
+            Globals.Settings.Save();
+        }
 
         private void buttonAuth_Click(object sender, EventArgs e)
         {
@@ -148,8 +199,8 @@ namespace UI
                 postTimeGap = int.Parse(textBoxPostTimeStep.Text);
             }
 
-            double? longitude = double.Parse(textBoxLong.Text.Replace('.',','));
-            double? latitude = double.Parse(textBoxLat.Text.Replace('.', ','));
+            double? longitude = double.Parse(textBoxLongitude.Text.Replace('.',','));
+            double? latitude = double.Parse(textBoxLatitude.Text.Replace('.', ','));
             Location initialLocation = null;
             if (checkBoxPlaceGeoPosition.Checked && longitude != null && latitude != null)
             {
@@ -231,13 +282,13 @@ namespace UI
                 }
                 else
                 {
-                    string filename = $"{completedFolder}\\{contentInfo.Name}";
-                    if (File.Exists(filename))
-                        filename = $"{completedFolder}\\{contentInfo.NameWithoutExtension}-{Guid.NewGuid().ToString()}{contentInfo.Extension}";
+                    string dstFilename = $"{completedFolder}\\{contentInfo.Name}";
+                    if (File.Exists(dstFilename))
+                        dstFilename = $"{completedFolder}\\{contentInfo.NameWithoutExtension}-{Guid.NewGuid().ToString()}{contentInfo.Extension}";
                     else
-                        filename = contentInfo.Name;
+                        dstFilename = $"{completedFolder}\\{contentInfo.Name}";
 
-                    File.Move(contentInfo.FullName, filename);
+                    File.Move(contentInfo.FullName, dstFilename);
                 }
 
                 dailyPostCounter++;
@@ -294,5 +345,7 @@ namespace UI
             if (checkBoxThroughoutTheDay.Checked) textBoxPostTimeStep.Enabled = false;
             else textBoxPostTimeStep.Enabled = true;
         }
+
+        
     }
 }

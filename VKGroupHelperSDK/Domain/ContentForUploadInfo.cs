@@ -42,7 +42,7 @@ namespace VKGroupHelperSDK.Domain
         public bool IsPhoto()
         {
             bool res = false;
-            if (_fileInfo.Extension == ".jpg") res = true;
+            if (_fileInfo.Extension.ToLower() == ".jpg") res = true;
 
             return res;
         }
@@ -50,7 +50,7 @@ namespace VKGroupHelperSDK.Domain
         public bool IsVideo()
         {
             bool res = false;
-            if (_fileInfo.Extension == ".mp4") res = true;
+            if (_fileInfo.Extension.ToLower() == ".mp4") res = true;
 
             return res;
         }
