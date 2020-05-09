@@ -105,15 +105,15 @@ namespace UI
 
         public string ContentPath { get; set; }
 
-        public int TotalPosts { get; set; }
+        public int TotalPosts { get; set; } = -1;
 
-        public int MaxPostOnDay { get; set; }
+        public int MaxPostOnDay { get; set; } = -1;
 
-        public int PostStep { get; set; }
+        public int PostStep { get; set; } = 2;
 
-        public bool LoadPictures { get; set; }
+        public bool LoadPictures { get; set; } = true;
 
-        public bool LoadVideo { get; set; }
+        public bool LoadVideo { get; set; } = true;
 
         public bool ThroughoutTheDay { get; set; }
 
@@ -121,9 +121,9 @@ namespace UI
 
         public string Hashtags { get; set; }
 
-        public int TimeMin { get; set; }
+        public int TimeMin { get; set; } = 9;
 
-        public int TimeMax { get; set; }
+        public int TimeMax { get; set; } = 23;
 
         // Опрос
         public Poll Poll { get; set; } = new Poll();
@@ -131,13 +131,13 @@ namespace UI
         // Геопозиция
         public bool PlaceGeoPosition { get; set; }
 
-        public double Latitude { get; set; }
+        public double Latitude { get; set; } = 55.7595916;
 
-        public double Longitude { get; set; }
+        public double Longitude { get; set; } = 37.5819287;
 
-        public double LocationStep { get; set; }
+        public double LocationStep { get; set; } = 0.0016;
 
-        public int SquareWidth { get; set; }
+        public int SquareWidth { get; set; } = 5000;
     }
 }
 
