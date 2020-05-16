@@ -125,6 +125,8 @@ namespace UI
 
         public int TimeMax { get; set; } = 23;
 
+        public bool StartFromSelectedDate { get; set; }
+
         // Опрос
         public Poll Poll { get; set; } = new Poll();
 

@@ -50,6 +50,8 @@ namespace UI
             textBoxLongitude.Text = Globals.Settings.Longitude.ToString();
             textBoxLocationStep.Text = Globals.Settings.LocationStep.ToString();
             textBoxSquareWidth.Text = Globals.Settings.SquareWidth.ToString();
+
+            checkBoxStartFromSelectedDate.Checked = Globals.Settings.StartFromSelectedDate;
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -88,6 +90,8 @@ namespace UI
             Globals.Settings.Longitude  = double.Parse( textBoxLongitude.Text);
             Globals.Settings.LocationStep = double.Parse( textBoxLocationStep.Text );
             Globals.Settings.SquareWidth = int.Parse( textBoxSquareWidth.Text);
+
+            Globals.Settings.StartFromSelectedDate = checkBoxStartFromSelectedDate.Checked;
 
             Globals.Settings.Save();
         }
@@ -172,11 +176,19 @@ namespace UI
             }
 
             // дата начала
-            DateTime startDate = dateTimePickerBeginDate.Value;
-            if (startDate <= DateTime.Now.AddMinutes(1))
+            DateTime startDate;
+            if (checkBoxStartFromSelectedDate.Checked)
             {
-                MessageBox.Show("Операция не может быть выполнена - дата публикации должна быть минимум + 1 минут к текущему времени/дате");
-                return;
+                if (dateTimePickerBeginDate.Value <= DateTime.Now.AddMinutes(1))
+                {
+                    MessageBox.Show("Операция не может быть выполнена - дата публикации должна быть минимум + 1 минут к текущему времени/дате");
+                    return;
+                }
+                startDate = dateTimePickerBeginDate.Value;
+            }
+            else
+            {
+                startDate = DateTime.Now.AddMinutes(1);
             }
 
             #endregion
@@ -317,6 +329,7 @@ namespace UI
         private void buttonSelectContentPath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = textBoxContentPath.Text;
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 textBoxContentPath.Text = fbd.SelectedPath;

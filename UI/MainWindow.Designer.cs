@@ -75,6 +75,7 @@
             this.buttonSelectContentPath = new System.Windows.Forms.Button();
             this.textBoxContentPath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.checkBoxStartFromSelectedDate = new System.Windows.Forms.CheckBox();
             this.groupBoxAuth.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -141,6 +142,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxStartFromSelectedDate);
             this.groupBox1.Controls.Add(this.checkBoxThroughoutTheDay);
             this.groupBox1.Controls.Add(this.checkBoxUploadPhoto);
             this.groupBox1.Controls.Add(this.checkBoxUploadVideo);
@@ -322,10 +324,10 @@
             this.label16.TabIndex = 26;
             this.label16.Text = "Шаг разброса";
             // 
-            // textBoxLong
+            // textBoxLongitude
             // 
             this.textBoxLongitude.Location = new System.Drawing.Point(482, 49);
-            this.textBoxLongitude.Name = "textBoxLong";
+            this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.Size = new System.Drawing.Size(181, 20);
             this.textBoxLongitude.TabIndex = 25;
             this.textBoxLongitude.Text = "37.5819287";
@@ -339,10 +341,10 @@
             this.label14.TabIndex = 24;
             this.label14.Text = "Долгота (Longitude)";
             // 
-            // textBoxLat
+            // textBoxLatitude
             // 
             this.textBoxLatitude.Location = new System.Drawing.Point(134, 49);
-            this.textBoxLatitude.Name = "textBoxLat";
+            this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(181, 20);
             this.textBoxLatitude.TabIndex = 23;
             this.textBoxLatitude.Text = "55,7595916";
@@ -550,6 +552,16 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Путь";
             // 
+            // checkBoxStartFromSelectedDate
+            // 
+            this.checkBoxStartFromSelectedDate.AutoSize = true;
+            this.checkBoxStartFromSelectedDate.Location = new System.Drawing.Point(347, 189);
+            this.checkBoxStartFromSelectedDate.Name = "checkBoxStartFromSelectedDate";
+            this.checkBoxStartFromSelectedDate.Size = new System.Drawing.Size(185, 17);
+            this.checkBoxStartFromSelectedDate.TabIndex = 32;
+            this.checkBoxStartFromSelectedDate.Text = "Публиковать с указанной даты";
+            this.checkBoxStartFromSelectedDate.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,6 +635,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox checkBoxThroughoutTheDay;
         private System.Windows.Forms.CheckBox checkBoxPlaceGeoPosition;
+        private System.Windows.Forms.CheckBox checkBoxStartFromSelectedDate;
     }
 }
 
