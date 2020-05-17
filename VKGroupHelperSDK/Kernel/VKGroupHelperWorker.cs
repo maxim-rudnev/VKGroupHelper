@@ -19,14 +19,19 @@ namespace VKGroupHelperSDK.Kernel
     public class VKGroupHelperWorker
     {
         VkApi _api = null;
+        ulong _appid;
 
-        public VKGroupHelperWorker(ulong appid, string username, string password)
+        public VKGroupHelperWorker(ulong appid)
         {
             _api = new VkApi();
+            _appid = appid;
+        }
 
+        public void Login(string username, string password)
+        {
             _api.Authorize(new ApiAuthParams
             {
-                ApplicationId = appid,
+                ApplicationId = _appid,
                 Login = username,
                 Password = password,
                 Settings = Settings.All

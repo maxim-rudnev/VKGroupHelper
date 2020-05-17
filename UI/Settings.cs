@@ -121,6 +121,8 @@ namespace UI
 
         public string Hashtags { get; set; }
 
+        public DateTime StartDate { get; set; }
+
         public int TimeMin { get; set; } = 9;
 
         public int TimeMax { get; set; } = 23;

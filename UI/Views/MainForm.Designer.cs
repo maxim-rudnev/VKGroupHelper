@@ -1,6 +1,6 @@
 ﻿namespace UI
 {
-    partial class MainWindow
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -124,7 +124,6 @@
             this.buttonAuth.TabIndex = 4;
             this.buttonAuth.Text = "Авторизация";
             this.buttonAuth.UseVisualStyleBackColor = true;
-            this.buttonAuth.Click += new System.EventHandler(this.buttonAuth_Click);
             // 
             // groupBoxAuth
             // 
@@ -259,7 +258,6 @@
             this.buttonLoad.TabIndex = 24;
             this.buttonLoad.Text = "Загрузить";
             this.buttonLoad.UseVisualStyleBackColor = true;
-            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
             // groupBox3
             // 
@@ -571,7 +569,6 @@
             this.Controls.Add(this.groupBoxAuth);
             this.Name = "MainWindow";
             this.Text = "VK Group Helper";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.groupBoxAuth.ResumeLayout(false);
             this.groupBoxAuth.PerformLayout();
