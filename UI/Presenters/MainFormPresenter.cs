@@ -15,12 +15,14 @@ namespace UI.Presenters
         IMainFormView _view;
         Settings _settings;
         VKGroupHelperWorker _vk;
+        ApplicationController _applicationController;
 
         public MainFormPresenter(ApplicationController applicationController, IMainFormView mainForm, Settings settings, VKGroupHelperWorker vk)
         {
             _view = mainForm;
             _settings = settings;
             _vk = vk;
+            _applicationController = applicationController;
 
             _view.Login += () => Login();
             _view.Close += () => Close();
@@ -191,8 +193,6 @@ namespace UI.Presenters
             {
                 _view.ShowMessage(ex.Message);
             }
-
-
         }
 
         public void Run()
