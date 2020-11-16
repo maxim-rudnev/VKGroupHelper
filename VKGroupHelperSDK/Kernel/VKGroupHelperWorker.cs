@@ -115,7 +115,7 @@ namespace VKGroupHelperSDK.Kernel
                     }
                 }
             }
-
+            // 
             // загрузка видео
             if (contentInfo.IsVideo())
             {
