@@ -29,146 +29,145 @@ namespace UI.Presenters
             _view.VKUpload += () => VKUpload();
         }
 
-        private void VKUpload()
+        private async void VKUpload()
         {
-            if (_view.Check())
+            await Task.Run(() =>
             {
-                _view.UpdateSettings(_settings);
-                _settings.Save();
-
-                // хэштэги
-                string hashtags = _settings.Hashtags;
-
-                // одна картинка - один пост
-                // какой шаг между постами (часов)
-                int postTimeGap;
-                if (_settings.ThroughoutTheDay)
+                if (_view.Check())
                 {
-                    int minHour = _settings.TimeMin;
-                    int maxHour = _settings.TimeMax;
+                    _view.UpdateSettings(_settings);
+                    _settings.Save();
 
-                    postTimeGap = (maxHour - minHour) / _settings.MaxPostOnDay;
-                }
-                else
-                {
-                    postTimeGap = _settings.PostStep;
-                }
+                    // хэштэги
+                    string hashtags = _settings.Hashtags;
 
-                double? longitude = _settings.Longitude;
-                double? latitude = _settings.Latitude;
-                Location initialLocation = null;
-                if (_settings.PlaceGeoPosition && longitude != null && latitude != null)
-                {
-                    initialLocation = new Location()
+                    // одна картинка - один пост
+                    // какой шаг между постами (часов)
+                    int postTimeGap;
+                    if (_settings.ThroughoutTheDay)
                     {
-                        Longitude = longitude.Value,
-                        Latitude = latitude.Value
-                    };
-                }
-                double? squareWidth = _settings.SquareWidth;
-                double? locationStep = _settings.LocationStep; // по умолчанию 0,0016 что примерно 550м
+                        int minHour = _settings.TimeMin;
+                        int maxHour = _settings.TimeMax;
 
-                // в каждом посте один анонимный опрос
-                Poll poll = new Poll()
-                {
-                    Question = "...",
-                    Answers = new List<string>()
-                {
-                    "ЗАШЛО",
-                    "НЕ ЗАШЛО"
-                }
-                };
-
-
-
-
-
-                int postCounter = 0;
-                int dayCounter = 0;
-                int dailyPostCounter = 0;
-                DateTime dailyFirstPostDate = _settings.StartDate;
-                int locX = 0;
-                int locY = 0;
-                int? maxSquarePosts = squareWidth != null ? (int?)squareWidth.Value / 550 : null;
-
-                string completedFolder = $"{_settings.ContentPath}\\Completed";
-                if (!Directory.Exists(completedFolder)) Directory.CreateDirectory(completedFolder);
-
-                foreach (var contentInfo in FSClient.GetContentFromFolder(_settings.ContentPath))
-                {
-                    if (contentInfo.IsVideo() && !_settings.LoadVideo) continue;
-
-                    if (contentInfo.IsPhoto() && !_settings.LoadPictures) continue;
-
-                    if (postCounter == _settings.TotalPosts)
-                    {
-                        _view.ShowMessage("Операция выполнена");
-                        break;
-                    }
-
-                    if (_settings.MaxPostOnDay != -1 && dailyPostCounter == _settings.MaxPostOnDay)
-                    {
-                        dailyPostCounter = 0;
-                        dayCounter++;
-                    }
-
-
-                    // вычисление даты
-                    DateTime postDate = dailyFirstPostDate.AddDays(dayCounter).AddHours(postTimeGap * dailyPostCounter);
-
-                    // вычисление геолокации
-                    Location newLocation = null;
-                    if (initialLocation != null && locationStep != null && squareWidth != null && maxSquarePosts != null)
-                    {
-                        newLocation = new Location();
-                        newLocation.Latitude = initialLocation.Latitude + locationStep.Value * locX;
-                        newLocation.Longitude = initialLocation.Longitude - locationStep.Value * locY;
-                    }
-
-                    try
-                    {
-                        _vk.WallPost(_settings.GroupId, postDate, hashtags, contentInfo, poll, newLocation);
-                    }
-                    catch (Exception ex)
-                    {
-                        _view.ShowMessage($"Произошла ошибка - {ex.Message}");
-                    }
-
-                    if (_settings.DeleteAfterLoad)
-                    {
-                        File.Delete(contentInfo.FullName);
+                        postTimeGap = (maxHour - minHour) / _settings.MaxPostOnDay;
                     }
                     else
                     {
-                        string dstFilename = $"{completedFolder}\\{contentInfo.Name}";
-                        if (File.Exists(dstFilename))
-                            dstFilename = $"{completedFolder}\\{contentInfo.NameWithoutExtension}-{Guid.NewGuid().ToString()}{contentInfo.Extension}";
-                        else
-                            dstFilename = $"{completedFolder}\\{contentInfo.Name}";
-
-                        File.Move(contentInfo.FullName, dstFilename);
+                        postTimeGap = _settings.PostStep;
                     }
 
-                    dailyPostCounter++;
-                    postCounter++;
-                    locX++;
-
-                    if (maxSquarePosts != null)
+                    double? longitude = _settings.Longitude;
+                    double? latitude = _settings.Latitude;
+                    Location initialLocation = null;
+                    if (_settings.PlaceGeoPosition && longitude != null && latitude != null)
                     {
-                        if (locX > maxSquarePosts)
+                        initialLocation = new Location()
                         {
-                            locX = 0;
-                            locY++;
+                            Longitude = longitude.Value,
+                            Latitude = latitude.Value
+                        };
+                    }
+                    double? squareWidth = _settings.SquareWidth;
+                    double? locationStep = _settings.LocationStep; // по умолчанию 0,0016 что примерно 550м
+
+                    // в каждом посте один анонимный опрос
+                    Poll poll = new Poll()
+                    {
+                        Question = "...",
+                        Answers = new List<string>()
+                        {
+                            "ЗАШЛО",
+                            "НЕ ЗАШЛО"
                         }
-                        if (locY > maxSquarePosts)
+                    };
+
+                    int postCounter = 0;
+                    int dayCounter = 0;
+                    int dailyPostCounter = 0;
+                    DateTime dailyFirstPostDate = _settings.StartDate;
+                    int locX = 0;
+                    int locY = 0;
+                    int? maxSquarePosts = squareWidth != null ? (int?)squareWidth.Value / 550 : null;
+
+                    string completedFolder = $"{_settings.ContentPath}\\Completed";
+                    if (!Directory.Exists(completedFolder)) Directory.CreateDirectory(completedFolder);
+
+                    foreach (var contentInfo in FSClient.GetContentFromFolder(_settings.ContentPath))
+                    {
+                        if (contentInfo.IsVideo() && !_settings.LoadVideo) continue;
+
+                        if (contentInfo.IsPhoto() && !_settings.LoadPictures) continue;
+
+                        if (postCounter == _settings.TotalPosts)
                         {
-                            locY = 0;
+                            _view.ShowMessage("Операция выполнена");
+                            break;
+                        }
+
+                        if (_settings.MaxPostOnDay != -1 && dailyPostCounter == _settings.MaxPostOnDay)
+                        {
+                            dailyPostCounter = 0;
+                            dayCounter++;
+                        }
+
+
+                        // вычисление даты
+                        DateTime postDate = dailyFirstPostDate.AddDays(dayCounter).AddHours(postTimeGap * dailyPostCounter);
+
+                        // вычисление геолокации
+                        Location newLocation = null;
+                        if (initialLocation != null && locationStep != null && squareWidth != null && maxSquarePosts != null)
+                        {
+                            newLocation = new Location();
+                            newLocation.Latitude = initialLocation.Latitude + locationStep.Value * locX;
+                            newLocation.Longitude = initialLocation.Longitude - locationStep.Value * locY;
+                        }
+
+                        try
+                        {
+                            _vk.WallPost(_settings.GroupId, postDate, hashtags, contentInfo, poll, newLocation);
+                        }
+                        catch (Exception ex)
+                        {
+                            _view.ShowMessage($"Произошла ошибка - {ex.Message}");
+                        }
+
+                        if (_settings.DeleteAfterLoad)
+                        {
+                            File.Delete(contentInfo.FullName);
+                        }
+                        else
+                        {
+                            string dstFilename = $"{completedFolder}\\{contentInfo.Name}";
+                            if (File.Exists(dstFilename))
+                                dstFilename = $"{completedFolder}\\{contentInfo.NameWithoutExtension}-{Guid.NewGuid().ToString()}{contentInfo.Extension}";
+                            else
+                                dstFilename = $"{completedFolder}\\{contentInfo.Name}";
+
+                            File.Move(contentInfo.FullName, dstFilename);
+                        }
+
+                        dailyPostCounter++;
+                        postCounter++;
+                        locX++;
+
+                        if (maxSquarePosts != null)
+                        {
+                            if (locX > maxSquarePosts)
+                            {
+                                locX = 0;
+                                locY++;
+                            }
+                            if (locY > maxSquarePosts)
+                            {
+                                locY = 0;
+                            }
                         }
                     }
-                }
 
-                _view.ShowMessage("Операция выполнена");
-            }
+                    _view.ShowMessage("Операция выполнена");
+                }
+            });
         }
 
         private void Close()
@@ -177,22 +176,25 @@ namespace UI.Presenters
             _settings.Save();
         }
 
-        private void Login()
+        private async void Login()
         {
-            _view.UpdateSettings(_settings);
-            _settings.Save();
-
-            try
+            await Task.Run(() =>
             {
-                _vk.Login(_settings.GetUsername(), _settings.GetPassword());
+                _view.UpdateSettings(_settings);
+                _settings.Save();
 
-                _view.LoadGroups(_vk.GetGroupsWhereUserIsAdmin());
-                _view.EnableVKUploadGroupBox();
-            }
-            catch (Exception ex)
-            {
-                _view.ShowMessage(ex.Message);
-            }
+                try
+                {
+                    _vk.Login(_settings.GetUsername(), _settings.GetPassword());
+
+                    _view.LoadGroups(_vk.GetGroupsWhereUserIsAdmin());
+                    _view.EnableVKUploadGroupBox();
+                }
+                catch (Exception ex)
+                {
+                    _view.ShowMessage(ex.Message);
+                }
+            });
         }
 
         public void Run()
