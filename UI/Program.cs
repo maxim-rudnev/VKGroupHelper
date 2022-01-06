@@ -23,6 +23,7 @@ namespace UI
         static void Main()
         {
             Application.EnableVisualStyles();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.SetCompatibleTextRenderingDefault(false);
 
             ulong appid = ulong.Parse(ConfigurationManager.AppSettings["AppIdForTest"]);

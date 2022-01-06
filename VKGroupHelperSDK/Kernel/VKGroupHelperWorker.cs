@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VKGroupHelperSDK.Domain;
 using VkNet;
+using VkNet.AudioBypassService.Extensions;
 using VkNet.Enums.Filters;
 using VkNet.Enums.SafetyEnums;
 using VkNet.Model;
@@ -23,7 +25,10 @@ namespace VKGroupHelperSDK.Kernel
 
         public VKGroupHelperWorker(ulong appid)
         {
-            _api = new VkApi();
+            var services = new ServiceCollection();
+            services.AddAudioBypass();
+
+            _api = new VkApi(services);
             _appid = appid;
         }
 
